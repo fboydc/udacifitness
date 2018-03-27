@@ -3,12 +3,25 @@ import { connect } from 'react-redux'
 import * as actions from '../actions'
 import { View, Text, StyleSheet, TouchableOpacity, Platform, Button } from 'react-native'
 import { getDeck } from '../utils/api'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
+import { Animated } from 'react-native'
+
 
 
 class DeckDetails extends Component {
 
 
+	constructor(){
+		super()
+		this.state = {
+			fade: new Animated.Value(0)
+		}
+	}
 
+
+	componentDidMount(){
+		Animated.timing(this.state.fade, {toValue: 1, duration: 1000}).start()
+	}
 
 	render(){
 
@@ -21,6 +34,9 @@ class DeckDetails extends Component {
 						<Text style={styles.deckTitle}>{currentDeck.title}</Text>
 						<Text style={styles.cardsNum}>{currentDeck.numOfCards} card/s</Text>
 					</View>
+					<Animated.View style={{opacity: this.state.fade}}>
+						<MaterialCommunityIcons name='cards-playing-outline' color='black' size={100}/>
+					</Animated.View>
 					<View>
 						<TouchableOpacity onPress={()=>{this.props.navigation.navigate('AddCard', {deck: currentDeck}) }} style={[styles.buttonContainer, {backgroundColor: 'black'}]}>
 							<Text style={styles.buttonText}>Add Card</Text>
